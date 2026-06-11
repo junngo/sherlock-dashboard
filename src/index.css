@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { margin: 0; padding: 0; height: 100%; }
+::selection { background: rgba(120,130,140,0.22); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-track { background: transparent; }
+
+@keyframes scShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+@keyframes scSpin { to { transform: rotate(360deg); } }
+@keyframes scPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(31,157,87,0.45); }
+  70%  { box-shadow: 0 0 0 6px rgba(31,157,87,0); }
+  100% { box-shadow: 0 0 0 0 rgba(31,157,87,0); }
+}
