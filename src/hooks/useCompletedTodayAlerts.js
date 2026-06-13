@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { buildUrl, API_ENDPOINTS } from '../config/api.js';
-import { IN_PROGRESS } from '../data.js';
-import { toUtc, formatElapsed, formatTime, formatDateTime, formatAgo } from '../utils/time.js';
+import { toUtc, formatDateTime, formatAgo } from '../utils/time.js';
 
 function parseRows(rows) {
   const map = new Map();
@@ -15,9 +14,7 @@ function parseRows(rows) {
 
   return Array.from(map.values()).map(a => {
     const iters = [...a.iterations].sort((x, y) => x.iteration - y.iteration);
-    const first = iters[0];
     const last = iters[iters.length - 1];
-    const elapsedMs = Date.now() - new Date(toUtc(first.timestamp)).getTime();
 
     return {
       alert_id: a.alert_id,
@@ -26,8 +23,7 @@ function parseRows(rows) {
       test: a.suite && a.test ? `${a.suite} ${a.test}` : (a.suite || a.test || '—'),
       status: last.status,
       iter: iters.length,
-      elapsed: formatElapsed(elapsedMs),
-      elapsedMs,
+      completedAt: formatDateTime(last.timestamp),
       iterations: iters.map(it => ({
         iteration: it.iteration,
         status: it.status,
@@ -43,11 +39,10 @@ function parseRows(rows) {
   });
 }
 
-export function useAlerts() {
+export function useCompletedTodayAlerts() {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [lastUpdated, setLastUpdated] = useState(null);
   const abortRef = useRef(null);
 
   const fetchAlerts = useCallback(async () => {
@@ -59,19 +54,16 @@ export function useAlerts() {
     setError(null);
 
     try {
-      const res = await fetch(buildUrl(API_ENDPOINTS.inProgressAlerts), { signal: controller.signal });
+      const res = await fetch(buildUrl(API_ENDPOINTS.completedTodayList), { signal: controller.signal });
       if (!res.ok) throw new Error(`Redash returned HTTP ${res.status}`);
       const json = await res.json();
       const rows = json.query_result.data.rows;
       setAlerts(parseRows(rows));
-      setLastUpdated(Date.now());
       setError(null);
     } catch (err) {
       if (err.name === 'AbortError') return;
-      console.warn('[useAlerts] fetch failed, falling back to mock data:', err.message);
+      console.warn('[useCompletedTodayAlerts] fetch failed:', err.message);
       setError(err.message);
-      setAlerts(IN_PROGRESS);
-      setLastUpdated(Date.now());
     } finally {
       setLoading(false);
     }
@@ -82,5 +74,5 @@ export function useAlerts() {
     return () => abortRef.current?.abort();
   }, [fetchAlerts]);
 
-  return { alerts, loading, error, refetch: fetchAlerts, lastUpdated };
+  return { alerts, loading, error, refetch: fetchAlerts };
 }

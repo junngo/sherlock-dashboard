@@ -42,7 +42,7 @@ function SegBtn({ label, active, onClick }) {
 
 function AlertRow({ alert, dark, expanded, onToggle, logStyle }) {
   const isExp = expanded === alert.alert_id;
-  const perfUrl = `https://treeherder.mozilla.org/perfherder/alerts?id=${alert.alert_id}`;
+  const perfUrl = `https://treeherder.mozilla.org/perfherder/alerts?id=${alert.summary_id}`;
 
   return (
     <div>
@@ -57,9 +57,17 @@ function AlertRow({ alert, dark, expanded, onToggle, logStyle }) {
         onMouseEnter={e => { e.currentTarget.style.background = 'var(--row-hover)'; }}
         onMouseLeave={e => { e.currentTarget.style.background = isExp ? 'var(--row-hover)' : 'transparent'; }}
       >
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12.5px', color: 'var(--text2)' }}>
-          <span style={{ color: 'var(--text3)' }}>#</span>{alert.alert_id}
-        </span>
+        <a
+          href={perfUrl}
+          target="_blank"
+          rel="noreferrer"
+          onClick={e => e.stopPropagation()}
+          style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12.5px', color: 'var(--text2)', textDecoration: 'none', transition: 'color .12s' }}
+          onMouseEnter={e => { e.currentTarget.style.color = 'var(--text)'; e.currentTarget.style.textDecoration = 'underline'; }}
+          onMouseLeave={e => { e.currentTarget.style.color = 'var(--text2)'; e.currentTarget.style.textDecoration = 'none'; }}
+        >
+          <span style={{ color: 'var(--text3)' }}>#</span>{alert.summary_id}
+        </a>
         <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>{alert.test}</span>
         <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: 'var(--text2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>{alert.platform}</span>
         <StatusBadge status={alert.status} dark={dark} />
@@ -110,7 +118,7 @@ export default function InProgressTable({ alerts, dark, loading, expanded, onTog
       <div style={{ border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--panel)', overflow: 'hidden', transition: 'background .18s ease, border-color .18s ease' }}>
         {/* Table header */}
         <div style={{ display: 'grid', gridTemplateColumns: COLS, alignItems: 'center', gap: '10px', padding: '0 16px', height: '36px', background: 'var(--panel-alt)', borderBottom: '1px solid var(--border)' }}>
-          {['Alert', 'Test', 'Platform', 'Status', 'Iter', 'Elapsed', '', ''].map((h, i) => (
+          {['Summary', 'Test', 'Platform', 'Status', 'Iter', 'Elapsed', '', ''].map((h, i) => (
             <span key={i} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', fontWeight: 600, letterSpacing: '0.7px', textTransform: 'uppercase', color: 'var(--text3)' }}>{h}</span>
           ))}
         </div>

@@ -116,13 +116,13 @@ function CardsView({ iterations, dark }) {
 }
 
 export default function IterationLog({ alert, dark, logStyle }) {
-  const perfherderUrl = `https://treeherder.mozilla.org/perfherder/alerts?id=${alert.alert_id}`;
+  const perfherderUrl = `https://treeherder.mozilla.org/perfherder/alerts?id=${alert.summary_id}`;
   return (
     <div style={{ background: 'var(--panel-alt)', borderBottom: '1px solid var(--border)', padding: '15px 20px 7px' }}>
       <div style={{ maxWidth: '1000px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '13px' }}>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9.5px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text3)' }}>Iteration log</span>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10.5px', color: 'var(--text3)' }}>{alert.iter} steps · summary #{alert.summary_id}</span>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10.5px', color: 'var(--text3)' }}>{alert.iter} steps · alert #{alert.alert_id}</span>
           <div style={{ flex: 1 }} />
           <a
             href={perfherderUrl}
@@ -133,7 +133,7 @@ export default function IterationLog({ alert, dark, logStyle }) {
             onMouseEnter={e => { e.currentTarget.style.background = 'var(--row-hover)'; e.currentTarget.style.color = 'var(--text)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)'; }}
           >
-            Open in Perfherder
+            Perfherder
             <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6 3h7v7" /><path d="M13 3 7 9" />
             </svg>

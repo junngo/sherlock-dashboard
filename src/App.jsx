@@ -5,8 +5,10 @@ import StatCards from './components/StatCards.jsx';
 import InProgressTable from './components/InProgressTable.jsx';
 import CompletedTable from './components/CompletedTable.jsx';
 import { useAlerts } from './hooks/useAlerts.js';
-import { COMPLETED } from './data.js';
-import { formatElapsed, formatAgoFromMs } from './utils/time.js';
+import { useInProgressCount } from './hooks/useInProgressCount.js';
+import { useCompletedTodayCount } from './hooks/useCompletedTodayCount.js';
+import { useCompletedTodayAlerts } from './hooks/useCompletedTodayAlerts.js';
+import { formatAgoFromMs } from './utils/time.js';
 
 const LIGHT = {
   '--bg': '#f5f6f7', '--panel': '#ffffff', '--panel-alt': '#fafbfb',
@@ -35,18 +37,15 @@ export default function App() {
   const [tick, setTick] = useState(0);
 
   const { alerts, loading, error, refetch, lastUpdated } = useAlerts();
+  const { count: ipCount, platformCount: ipPlatformCount, longestElapsed: ipLongest, loading: ipLoading, refetch: ipRefetch } = useInProgressCount();
+  const { count: ctCount, stabilizedCount: ctStab, gapStuckCount: ctStuck, currentDate: ctDate, loading: ctLoading, refetch: ctRefetch } = useCompletedTodayCount();
+  const { alerts: completedAlerts, loading: ctListLoading, refetch: ctListRefetch } = useCompletedTodayAlerts();
 
   useEffect(() => {
     const iv = setInterval(() => setTick(t => t + 1), 5000);
     return () => clearInterval(iv);
   }, []);
 
-  // Expand first alert once data loads
-  useEffect(() => {
-    if (!loading && alerts.length > 0 && expanded === null) {
-      setExpanded(alerts[0].alert_id);
-    }
-  }, [loading, alerts]);
 
   const agoLabel = lastUpdated
     ? formatAgoFromMs(Date.now() - lastUpdated)
@@ -66,20 +65,18 @@ export default function App() {
 
   const colors = dark ? DARK : LIGHT;
 
-  const platforms = new Set(alerts.map(a => a.platform));
-  const longestMs = alerts.length > 0 ? Math.max(...alerts.map(a => a.elapsedMs ?? 0)) : 0;
-
-  const stab = COMPLETED.filter(a => a.status === 'stabilized').length;
-  const stuck = COMPLETED.length - stab;
-  const stabPct = COMPLETED.length > 0 ? Math.round(stab / COMPLETED.length * 100) : 0;
+  const ctTotal = ctStab != null && ctStuck != null ? ctStab + ctStuck : null;
+  const stabPct = ctTotal > 0 ? Math.round(ctStab / ctTotal * 100) : 0;
 
   const stats = {
-    inProgress: alerts.length,
-    inProgressSub: alerts.length > 0
-      ? `${platforms.size} platform${platforms.size !== 1 ? 's' : ''} · longest ${formatElapsed(longestMs)}`
-      : '—',
-    completed: COMPLETED.length,
-    stab, stuck,
+    inProgress: ipLoading ? '—' : (ipCount ?? '—'),
+    inProgressSub: ipLoading || ipCount === null
+      ? '—'
+      : `${ipPlatformCount} platform${ipPlatformCount !== 1 ? 's' : ''} · longest ${ipLongest}`,
+    completed: ctLoading ? '—' : (ctCount ?? '—'),
+    completedSub: ctLoading || ctDate === null ? null : ctDate,
+    stab: ctStab ?? 0,
+    stuck: ctStuck ?? 0,
     stabPct: stabPct + '%',
     stuckPct: (100 - stabPct) + '%',
   };
@@ -105,7 +102,7 @@ export default function App() {
           error={error}
           onToggleCollapse={() => setCollapsed(c => !c)}
           onToggleDark={toggleDark}
-          onRefresh={refetch}
+          onRefresh={() => { refetch(); ipRefetch(); ctRefetch(); ctListRefetch(); }}
         />
         <div style={{ flex: 1, overflow: 'auto', padding: '20px 22px 44px' }}>
           <StatCards stats={stats} dark={dark} />
@@ -119,9 +116,9 @@ export default function App() {
             onSetLogStyle={setLogStyle}
           />
           <CompletedTable
-            completed={COMPLETED}
+            alerts={completedAlerts}
             dark={dark}
-            loading={loading}
+            loading={ctListLoading}
           />
         </div>
       </div>

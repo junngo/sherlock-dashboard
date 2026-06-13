@@ -1,3 +1,6 @@
+export const toUtc = (ts) =>
+  ts && (ts.endsWith('Z') || ts.includes('+')) ? ts : ts + 'Z';
+
 export function formatElapsed(ms) {
   const min = Math.round(ms / 60000);
   if (min < 1) return '< 1m';
@@ -8,13 +11,23 @@ export function formatElapsed(ms) {
 }
 
 export function formatTime(ts) {
-  return new Date(ts).toLocaleTimeString('en-US', {
+  return new Date(toUtc(ts)).toLocaleTimeString('en-US', {
     hour: '2-digit', minute: '2-digit', hour12: false,
   });
 }
 
+export function formatDateTime(ts) {
+  const d = new Date(toUtc(ts));
+  const yyyy = d.getUTCFullYear();
+  const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(d.getUTCDate()).padStart(2, '0');
+  const hh = String(d.getUTCHours()).padStart(2, '0');
+  const min = String(d.getUTCMinutes()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd} ${hh}:${min} UTC`;
+}
+
 export function formatAgo(ts) {
-  const diffMin = Math.floor((Date.now() - new Date(ts).getTime()) / 60000);
+  const diffMin = Math.floor((Date.now() - new Date(toUtc(ts)).getTime()) / 60000);
   if (diffMin < 1) return 'just now';
   if (diffMin < 60) return `${diffMin}m ago`;
   const h = Math.floor(diffMin / 60);

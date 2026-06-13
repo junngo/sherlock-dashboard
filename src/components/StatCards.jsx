@@ -21,7 +21,7 @@ export default function StatCards({ stats }) {
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9.5px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text3)' }}>Completed today</div>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '9px', marginTop: '9px' }}>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '34px', fontWeight: 600, lineHeight: 1, letterSpacing: '-1px', color: 'var(--text)' }}>{stats.completed}</span>
-          <span style={{ fontSize: '12px', color: 'var(--text3)' }}>reached terminal status</span>
+          {stats.completedSub && <span style={{ fontSize: '12px', color: 'var(--text3)' }}>{stats.completedSub}</span>}
         </div>
         <div style={{ display: 'flex', height: '5px', borderRadius: '3px', overflow: 'hidden', marginTop: '13px', background: 'var(--border)' }}>
           <div style={{ width: stats.stabPct, background: '#1f9d57' }} />
