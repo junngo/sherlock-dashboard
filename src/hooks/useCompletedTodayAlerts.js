@@ -7,7 +7,7 @@ function parseRows(rows) {
 
   for (const row of rows) {
     if (!map.has(row.alert_id)) {
-      map.set(row.alert_id, { alert_id: row.alert_id, summary_id: row.summary_id, platform: row.platform, suite: row.suite, test: row.test, iterations: [] });
+      map.set(row.alert_id, { alert_id: row.alert_id, summary_id: row.summary_id, signature_id: row.signature_id, framework_id: row.framework_id, platform: row.platform, suite: row.suite, test: row.test, iterations: [] });
     }
     map.get(row.alert_id).iterations.push(row);
   }
@@ -19,6 +19,8 @@ function parseRows(rows) {
     return {
       alert_id: a.alert_id,
       summary_id: a.summary_id,
+      signatureId: a.signature_id,
+      frameworkId: a.framework_id,
       platform: a.platform,
       test: a.suite && a.test ? `${a.suite} ${a.test}` : (a.suite || a.test || '—'),
       status: last.status,
@@ -29,6 +31,8 @@ function parseRows(rows) {
         status: it.status,
         detected_push_id: it.detected_push_id,
         previous_push_id: it.previous_push_id,
+        detected_push_revision: it.detected_push_revision,
+        previous_push_revision: it.previous_push_revision,
         detected_t_value: it.detected_t_value,
         detected_push_gap_size: it.detected_push_gap_size,
         notes: it.notes,

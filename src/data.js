@@ -1,16 +1,16 @@
 export const IN_PROGRESS = [
   {
-    alert_id: 50532, summary_id: 41882, test: 'Speedometer3 Score',
+    alert_id: 50532, summary_id: 41882, signatureId: 4767430, frameworkId: 13, test: 'Speedometer3 Score',
     platform: 'linux1804-64-shippable-qr', status: 'left', iter: 4, elapsed: '1h 13m',
     iterations: [
-      { iteration: 1, status: 'initial', detected_push_id: 1930540, previous_push_id: 1930512, detected_t_value: 7.21, detected_push_gap_size: 16, notes: 'Initial backfill range established from alert summary.', time: '14:18', ago: '1h 13m ago' },
-      { iteration: 2, status: 'left', detected_push_id: 1930528, previous_push_id: 1930540, detected_t_value: 11.04, detected_push_gap_size: 8, notes: 'Regression persists at the earlier push — moving search window left.', time: '14:41', ago: '50m ago' },
-      { iteration: 3, status: 'right', detected_push_id: 1930520, previous_push_id: 1930528, detected_t_value: 4.85, detected_push_gap_size: 4, notes: 'No significant regression detected here — moving right.', time: '15:02', ago: '29m ago' },
-      { iteration: 4, status: 'left', detected_push_id: 1930524, previous_push_id: 1930520, detected_t_value: 9.97, detected_push_gap_size: 2, notes: 'Regression reappears between candidates — narrowing the gap.', time: '15:21', ago: '10m ago' },
+      { iteration: 1, status: 'initial', detected_push_id: 1930540, previous_push_id: 1930512, detected_push_revision: 'a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0', previous_push_revision: 'f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2e1', detected_t_value: 7.21, detected_push_gap_size: 16, notes: 'Initial backfill range established from alert summary.', time: '14:18', ago: '1h 13m ago' },
+      { iteration: 2, status: 'left', detected_push_id: 1930528, previous_push_id: 1930540, detected_push_revision: '086d14f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8', previous_push_revision: 'ff5217d18c57f8c82fb335fec3e3af4915d2a6b7', detected_t_value: 11.04, detected_push_gap_size: 8, notes: 'Regression persists at the earlier push — moving search window left.', time: '14:41', ago: '50m ago' },
+      { iteration: 3, status: 'right', detected_push_id: 1930520, previous_push_id: 1930528, detected_push_revision: 'c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2', previous_push_revision: '086d14f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8', detected_t_value: 4.85, detected_push_gap_size: 4, notes: 'No significant regression detected here — moving right.', time: '15:02', ago: '29m ago' },
+      { iteration: 4, status: 'left', detected_push_id: 1930524, previous_push_id: 1930520, detected_push_revision: 'e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4', previous_push_revision: 'c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2', detected_t_value: 9.97, detected_push_gap_size: 2, notes: 'Regression reappears between candidates — narrowing the gap.', time: '15:21', ago: '10m ago' },
     ],
   },
   {
-    alert_id: 50544, summary_id: 41896, test: 'tp5o Private Bytes',
+    alert_id: 50544, summary_id: 41896, signatureId: 4821001, frameworkId: 1, test: 'tp5o Private Bytes',
     platform: 'windows11-64-shippable', status: 'right', iter: 2, elapsed: '34m',
     iterations: [
       { iteration: 1, status: 'initial', detected_push_id: 1931002, previous_push_id: 1930974, detected_t_value: 5.62, detected_push_gap_size: 12, notes: 'Initial backfill range established from alert summary.', time: '14:57', ago: '34m ago' },
@@ -18,7 +18,7 @@ export const IN_PROGRESS = [
     ],
   },
   {
-    alert_id: 50551, summary_id: 41903, test: 'ts_paint_webext',
+    alert_id: 50551, summary_id: 41903, signatureId: 4798234, frameworkId: 1, test: 'ts_paint_webext',
     platform: 'macosx1015-64-shippable-qr', status: 'stabilized_with_gap', iter: 6, elapsed: '2h 41m',
     iterations: [
       { iteration: 1, status: 'initial', detected_push_id: 1929800, previous_push_id: 1929772, detected_t_value: 8.40, detected_push_gap_size: 20, notes: 'Initial backfill range established from alert summary.', time: '12:50', ago: '2h 41m ago' },
@@ -30,14 +30,14 @@ export const IN_PROGRESS = [
     ],
   },
   {
-    alert_id: 50560, summary_id: 41915, test: 'damp pageload toolbox',
+    alert_id: 50560, summary_id: 41915, signatureId: 4812567, frameworkId: 13, test: 'damp pageload toolbox',
     platform: 'linux1804-64-shippable-qr', status: 'initial', iter: 1, elapsed: '9m',
     iterations: [
       { iteration: 1, status: 'initial', detected_push_id: 1931440, previous_push_id: 1931412, detected_t_value: 6.93, detected_push_gap_size: 14, notes: 'Initial backfill range established — awaiting first retrigger results.', time: '15:22', ago: '9m ago' },
     ],
   },
   {
-    alert_id: 50538, summary_id: 41889, test: 'Speedometer3 Segment-AngularJS',
+    alert_id: 50538, summary_id: 41889, signatureId: 4755901, frameworkId: 13, test: 'Speedometer3 Segment-AngularJS',
     platform: 'android-hw-a55-14-0-aarch64-shippable', status: 'left', iter: 3, elapsed: '58m',
     iterations: [
       { iteration: 1, status: 'initial', detected_push_id: 1930610, previous_push_id: 1930582, detected_t_value: 9.15, detected_push_gap_size: 18, notes: 'Initial backfill range established from alert summary.', time: '14:33', ago: '58m ago' },

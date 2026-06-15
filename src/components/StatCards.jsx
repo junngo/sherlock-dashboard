@@ -16,9 +16,9 @@ export default function StatCards({ stats }) {
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: 'var(--text3)', marginTop: '10px' }}>{stats.inProgressSub}</div>
       </div>
 
-      {/* Completed today */}
+      {/* Completed (Last 24h) */}
       <div style={{ border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--panel)', padding: '15px 17px', transition: 'background .18s ease, border-color .18s ease' }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9.5px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text3)' }}>Completed today</div>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9.5px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text3)' }}>Completed (Last 24h)</div>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '9px', marginTop: '9px' }}>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '34px', fontWeight: 600, lineHeight: 1, letterSpacing: '-1px', color: 'var(--text)' }}>{stats.completed}</span>
           {stats.completedSub && <span style={{ fontSize: '12px', color: 'var(--text3)' }}>{stats.completedSub}</span>}

@@ -107,7 +107,7 @@ export default function CompletedTable({ alerts, dark, loading }) {
     <div style={{ marginTop: '26px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '10px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text2)' }}>Completed today</span>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text2)' }}>Completed (Last 24h)</span>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', fontWeight: 600, color: 'var(--text2)', background: 'var(--chip)', padding: '1px 7px', borderRadius: '10px' }}>{alerts.length}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
