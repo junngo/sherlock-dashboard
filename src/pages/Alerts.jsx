@@ -17,7 +17,7 @@ function SkeletonRow() {
     <div style={{ height: h, width: w, borderRadius: h === '18px' ? '5px' : '4px', background: SHIMMER, backgroundSize: '200% 100%', animation: 'scShimmer 1.3s infinite' }} />
   );
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: COLS, alignItems: 'center', gap: '10px', padding: '0 16px', height: '46px', borderBottom: '1px solid var(--border)' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: COLS, alignItems: 'center', gap: '10px', padding: '0 13px', height: '46px', borderBottom: '1px solid var(--border)', borderLeft: '3px solid transparent' }}>
       {cell('46px')} {cell('75%')} {cell('55%')} {cell('90px', '18px')} {cell('20px')} {cell('48px')} {cell('110px')} <div />
     </div>
   );
@@ -306,21 +306,30 @@ export default function Alerts({ dark, onToggleDark, onToggleCollapse }) {
           )}
         </div>
 
-        {/* Table */}
-        <div style={{ border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--panel)', overflow: 'hidden', transition: 'background .18s ease, border-color .18s ease' }}>
-
-          {/* Table header */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '0 13px 0 16px', height: '44px', background: 'var(--panel-alt)', borderBottom: '1px solid var(--border)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: COLS, alignItems: 'center', gap: '10px', flex: 1 }}>
-              {['Summary', 'Test', 'Platform', 'Status', 'Iters', 'Elapsed', 'Completed', ''].map((h, i) => (
-                <span key={i} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', fontWeight: 600, letterSpacing: '0.7px', textTransform: 'uppercase', color: 'var(--text3)' }}>{h}</span>
-              ))}
-            </div>
-            <div style={{ display: 'flex', gap: '2px', padding: '2px', background: 'var(--chip)', borderRadius: '7px', flexShrink: 0 }}>
+        {/* Table section header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text2)' }}>All alerts</span>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', fontWeight: 600, color: 'var(--text2)', background: 'var(--chip)', padding: '1px 7px', borderRadius: '10px' }}>{loading ? '—' : filtered.length}</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text3)' }}>Log view</span>
+            <div style={{ display: 'flex', gap: '2px', padding: '2px', background: 'var(--chip)', borderRadius: '7px' }}>
               <SegBtn label="Timeline" active={logStyle === 'timeline'} onClick={() => setLogStyle('timeline')} />
               <SegBtn label="Table" active={logStyle === 'table'} onClick={() => setLogStyle('table')} />
               <SegBtn label="Cards" active={logStyle === 'cards'} onClick={() => setLogStyle('cards')} />
             </div>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div style={{ border: '1px solid var(--border)', borderRadius: '10px', background: 'var(--panel)', overflow: 'hidden', transition: 'background .18s ease, border-color .18s ease' }}>
+
+          {/* Table header */}
+          <div style={{ display: 'grid', gridTemplateColumns: COLS, alignItems: 'center', gap: '10px', padding: '0 13px', height: '36px', background: 'var(--panel-alt)', borderBottom: '1px solid var(--border)', borderLeft: '3px solid transparent' }}>
+            {['Summary', 'Test', 'Platform', 'Status', 'Iters', 'Elapsed', 'Completed', ''].map((h, i) => (
+              <span key={i} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', fontWeight: 600, letterSpacing: '0.7px', textTransform: 'uppercase', color: 'var(--text3)' }}>{h}</span>
+            ))}
           </div>
 
           {/* Rows */}
