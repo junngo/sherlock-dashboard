@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import StatusBadge from './StatusBadge.jsx';
 import { statusMeta } from '../data.js';
 
@@ -158,7 +158,29 @@ function buildRevisionUrl(signatureId, frameworkId, revision) {
   return `https://treeherder.mozilla.org/perfherder/graphs?${params.toString()}&highlightedRevisions=${revision}`;
 }
 
+const LINK_ICON = (
+  <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6.5 9.5a3.5 3.5 0 0 0 5 0l2-2a3.5 3.5 0 0 0-5-5l-1 1" />
+    <path d="M9.5 6.5a3.5 3.5 0 0 0-5 0l-2 2a3.5 3.5 0 0 0 5 5l1-1" />
+  </svg>
+);
+const CHECK_ICON = (
+  <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2.5 8.5l4 4 7-8" />
+  </svg>
+);
+
 export default function IterationLog({ alert, dark, logStyle }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyLink = useCallback(async (e) => {
+    e.stopPropagation();
+    const url = `https://sherlock-moz.vercel.app/alerts?id=${alert.summary_id}`;
+    await navigator.clipboard.writeText(url);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [alert.summary_id]);
+
   const perfherderUrl = `https://treeherder.mozilla.org/perfherder/alerts?id=${alert.summary_id}`;
   const graphsUrl = buildGraphsUrl(alert);
   return (
@@ -168,6 +190,15 @@ export default function IterationLog({ alert, dark, logStyle }) {
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9.5px', fontWeight: 600, letterSpacing: '0.8px', textTransform: 'uppercase', color: 'var(--text3)' }}>Iteration log</span>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10.5px', color: 'var(--text3)' }}>{alert.iter} steps · alert #{alert.alert_id}</span>
           <div style={{ flex: 1 }} />
+          <button
+            onClick={handleCopyLink}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: "'IBM Plex Mono', monospace", fontSize: '10.5px', fontWeight: 600, color: copied ? '#1f9d57' : 'var(--text2)', textDecoration: 'none', border: `1px solid ${copied ? '#1f9d57' : 'var(--border)'}`, padding: '4px 9px', borderRadius: '6px', background: 'transparent', cursor: 'pointer', transition: 'background .12s, color .12s, border-color .12s' }}
+            onMouseEnter={e => { if (!copied) { e.currentTarget.style.background = 'var(--row-hover)'; e.currentTarget.style.color = 'var(--text)'; } }}
+            onMouseLeave={e => { if (!copied) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)'; } }}
+          >
+            {copied ? CHECK_ICON : LINK_ICON}
+            {copied ? 'Copied!' : null}
+          </button>
           <ExternalLink href={perfherderUrl}>Perfherder</ExternalLink>
           {alert.signatureId && alert.frameworkId && (
             <ExternalLink href={graphsUrl}>Graphs</ExternalLink>

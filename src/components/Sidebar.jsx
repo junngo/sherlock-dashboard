@@ -1,29 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { statusMeta, LEGEND_STATUSES } from '../data.js';
 
-const NavItem = ({ icon, label, active, soon }) => (
-  <a
-    style={{
-      display: 'flex', alignItems: 'center', gap: '11px', padding: '8px 10px',
-      borderRadius: '7px', textDecoration: 'none', cursor: 'pointer',
-      background: active ? 'var(--chip)' : 'transparent',
-      color: active ? 'var(--text)' : 'var(--text2)',
-      transition: 'background .12s, color .12s',
-    }}
-    onMouseEnter={e => { if (!active) { e.currentTarget.style.background = 'var(--row-hover)'; e.currentTarget.style.color = 'var(--text)'; } }}
-    onMouseLeave={e => { if (!active) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text2)'; } }}
-  >
-    <span style={{ display: 'flex', flexShrink: 0, color: active ? 'var(--text)' : undefined }}>{icon}</span>
-    {label && (
-      <>
-        <span style={{ fontSize: '13px', fontWeight: active ? 600 : 400, flex: 1 }}>{label}</span>
-        {soon && (
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '8px', letterSpacing: '.5px', color: 'var(--text3)', border: '1px solid var(--border)', borderRadius: '4px', padding: '1px 4px' }}>SOON</span>
-        )}
-      </>
-    )}
-  </a>
-);
+function NavItem({ to, icon, label, soon, end }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      style={({ isActive }) => ({
+        display: 'flex', alignItems: 'center', gap: '11px', padding: '8px 10px',
+        borderRadius: '7px', textDecoration: 'none', cursor: 'pointer',
+        background: isActive ? 'var(--chip)' : hovered ? 'var(--row-hover)' : 'transparent',
+        color: isActive || hovered ? 'var(--text)' : 'var(--text2)',
+        transition: 'background .12s, color .12s',
+      })}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {({ isActive }) => (
+        <>
+          <span style={{ display: 'flex', flexShrink: 0 }}>{icon}</span>
+          {label && (
+            <>
+              <span style={{ fontSize: '13px', fontWeight: isActive ? 600 : 400, flex: 1 }}>{label}</span>
+              {soon && (
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '8px', letterSpacing: '.5px', color: 'var(--text3)', border: '1px solid var(--border)', borderRadius: '4px', padding: '1px 4px' }}>SOON</span>
+              )}
+            </>
+          )}
+        </>
+      )}
+    </NavLink>
+  );
+}
 
 const DashboardIcon = () => (
   <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
@@ -84,11 +94,11 @@ export default function Sidebar({ collapsed, dark }) {
 
       {/* Nav */}
       <nav style={{ padding: '12px 10px', display: 'flex', flexDirection: 'column', gap: '2px', flex: 1 }}>
-        <NavItem icon={<DashboardIcon />} label={showLabels ? 'Dashboard' : null} active />
-        <NavItem icon={<AlertsIcon />} label={showLabels ? 'Alerts' : null} soon />
-        <NavItem icon={<IterationsIcon />} label={showLabels ? 'Iterations' : null} soon />
-        <NavItem icon={<HistoryIcon />} label={showLabels ? 'History' : null} soon />
-        <NavItem icon={<SettingsIcon />} label={showLabels ? 'Settings' : null} soon />
+        <NavItem to="/" end icon={<DashboardIcon />} label={showLabels ? 'Dashboard' : null} />
+        <NavItem to="/alerts" icon={<AlertsIcon />} label={showLabels ? 'Alerts' : null} />
+        <NavItem to="/iterations" icon={<IterationsIcon />} label={showLabels ? 'Iterations' : null} soon />
+        <NavItem to="/history" icon={<HistoryIcon />} label={showLabels ? 'History' : null} soon />
+        <NavItem to="/settings" icon={<SettingsIcon />} label={showLabels ? 'Settings' : null} soon />
       </nav>
 
       {/* Status key legend */}

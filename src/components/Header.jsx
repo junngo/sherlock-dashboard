@@ -35,7 +35,7 @@ function IconBtn({ onClick, children }) {
   );
 }
 
-export default function Header({ dark, agoLabel, loading, error, onToggleCollapse, onToggleDark, onRefresh }) {
+export default function Header({ dark, agoLabel, loading, error, onToggleCollapse, onToggleDark, onRefresh, title = 'Dashboard', subtitle = 'redash · auto-backfill' }) {
   return (
     <header style={{
       height: '57px', flexShrink: 0,
@@ -48,8 +48,8 @@ export default function Header({ dark, agoLabel, loading, error, onToggleCollaps
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
         <IconBtn onClick={onToggleCollapse}><HamburgerIcon /></IconBtn>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-          <span style={{ fontSize: '15.5px', fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.2px' }}>Dashboard</span>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: 'var(--text3)', letterSpacing: '.3px' }}>redash · auto-backfill</span>
+          <span style={{ fontSize: '15.5px', fontWeight: 600, color: 'var(--text)', letterSpacing: '-0.2px' }}>{title}</span>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: 'var(--text3)', letterSpacing: '.3px' }}>{subtitle}</span>
         </div>
       </div>
 
