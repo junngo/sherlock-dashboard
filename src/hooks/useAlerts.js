@@ -2,13 +2,14 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { buildUrl, API_ENDPOINTS } from '../config/api.js';
 import { IN_PROGRESS } from '../data.js';
 import { toUtc, formatElapsed, formatTime, formatDateTime, formatAgo } from '../utils/time.js';
+import { classifyAlert } from '../utils/alertStatus.js';
 
 function parseRows(rows) {
   const map = new Map();
 
   for (const row of rows) {
     if (!map.has(row.alert_id)) {
-      map.set(row.alert_id, { alert_id: row.alert_id, summary_id: row.summary_id, signature_id: row.signature_id, framework_id: row.framework_id, platform: row.platform, suite: row.suite, test: row.test, iterations: [] });
+      map.set(row.alert_id, { alert_id: row.alert_id, summary_id: row.summary_id, signature_id: row.signature_id, framework_id: row.framework_id, platform: row.platform, suite: row.suite, test: row.test, record_status: row.record_status, iterations: [] });
     }
     map.get(row.alert_id).iterations.push(row);
   }
@@ -27,6 +28,8 @@ function parseRows(rows) {
       platform: a.platform,
       test: a.suite && a.test ? `${a.suite} ${a.test}` : (a.suite || a.test || '—'),
       status: last.status,
+      recordStatus: a.record_status,
+      alertStatus: classifyAlert({ recordStatus: a.record_status, currentStatus: last.status }),
       iter: iters.length,
       elapsed: formatElapsed(elapsedMs),
       elapsedMs,

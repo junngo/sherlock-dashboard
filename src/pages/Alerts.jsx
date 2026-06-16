@@ -4,6 +4,7 @@ import Header from '../components/Header.jsx';
 import StatusBadge from '../components/StatusBadge.jsx';
 import IterationLog from '../components/IterationLog.jsx';
 import { useAllAlerts } from '../hooks/useAllAlerts.js';
+import { ALERT_STATUSES } from '../utils/alertStatus.js';
 import { formatElapsed, formatDateTime, toUtc } from '../utils/time.js';
 
 const PAGE_SIZES = [20, 50, 100];
@@ -200,16 +201,11 @@ export default function Alerts({ dark, onToggleDark, onToggleCollapse }) {
     return [...set].sort();
   }, [alerts]);
 
-  const statuses = useMemo(() => {
-    const set = new Set(alerts.map(a => a.currentStatus).filter(Boolean));
-    return [...set].sort();
-  }, [alerts]);
-
   const filtered = useMemo(() => {
     return alerts.filter(a => {
       if (search && !a.testName.toLowerCase().includes(search.toLowerCase()) && !String(a.summaryId).includes(search)) return false;
       if (platformFilter && a.platform !== platformFilter) return false;
-      if (statusFilter && a.currentStatus !== statusFilter) return false;
+      if (statusFilter && a.alertStatus !== statusFilter) return false;
       if (dateFrom || dateTo) {
         const ts = new Date(toUtc(a.firstTimestamp)).getTime();
         if (dateFrom && ts < new Date(dateFrom).getTime()) return false;
@@ -228,9 +224,9 @@ export default function Alerts({ dark, onToggleDark, onToggleCollapse }) {
   const pageAlerts = filtered.slice((safePage - 1) * pageSize, safePage * pageSize);
 
   const total = filtered.length;
-  const inProgress = filtered.filter(a => a.isRunning).length;
-  const stabilized = filtered.filter(a => a.currentStatus === 'stabilized').length;
-  const gapStuck = filtered.filter(a => a.currentStatus === 'stabilized_gap_stuck').length;
+  const countByStatus = Object.fromEntries(
+    ALERT_STATUSES.map(s => [s.key, filtered.filter(a => a.alertStatus === s.key).length])
+  );
 
   const resetPage = useCallback(() => setPage(1), []);
   const onToggleExpanded = useCallback((id) => {
@@ -256,11 +252,11 @@ export default function Alerts({ dark, onToggleDark, onToggleCollapse }) {
       <div style={{ flex: 1, overflow: 'auto', padding: '20px 22px 44px' }}>
 
         {/* Stat cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '14px', maxWidth: '900px', marginBottom: '22px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${ALERT_STATUSES.length + 1}, 1fr)`, gap: '14px', maxWidth: '1100px', marginBottom: '22px' }}>
           <StatCard label="Total" value={loading ? '—' : total} />
-          <StatCard label="In Progress" value={loading ? '—' : inProgress} dot="#3b82f6" accent="#3b82f6" />
-          <StatCard label="Stabilized" value={loading ? '—' : stabilized} dot="#1f9d57" accent="#1f9d57" />
-          <StatCard label="Gap Stuck" value={loading ? '—' : gapStuck} dot="#df4636" accent="#df4636" />
+          {ALERT_STATUSES.map(s => (
+            <StatCard key={s.key} label={s.label} value={loading ? '—' : countByStatus[s.key]} dot={s.dot} accent={s.accent} />
+          ))}
         </div>
 
         {/* Filters */}
@@ -276,7 +272,9 @@ export default function Alerts({ dark, onToggleDark, onToggleCollapse }) {
           </FilterSelect>
           <FilterSelect value={statusFilter} onChange={v => { setStatusFilter(v); resetPage(); }}>
             <option value="">All statuses</option>
-            {statuses.map(s => <option key={s} value={s}>{s}</option>)}
+            {ALERT_STATUSES.map(s => (
+              <option key={s.key} value={s.key}>{s.label}</option>
+            ))}
           </FilterSelect>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10.5px', color: 'var(--text3)' }}>From</span>

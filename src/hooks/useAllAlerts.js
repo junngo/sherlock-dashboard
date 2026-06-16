@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { buildUrl, API_ENDPOINTS } from '../config/api.js';
 import { toUtc, formatDateTime, formatAgo } from '../utils/time.js';
-
-const TERMINAL = ['stabilized', 'stabilized_gap_stuck', 'no_candidate_detected'];
+import { classifyAlert } from '../utils/alertStatus.js';
 
 function parseRows(rows) {
   const map = new Map();
@@ -17,6 +16,7 @@ function parseRows(rows) {
         platform: row.platform,
         suite: row.suite,
         test: row.test,
+        record_status: row.record_status,
         iterations: [],
       });
     }
@@ -28,7 +28,9 @@ function parseRows(rows) {
     const first = iters[0];
     const last = iters[iters.length - 1];
     const currentStatus = last.status;
-    const isRunning = !TERMINAL.includes(currentStatus);
+    const recordStatus = a.record_status;
+    const alertStatus = classifyAlert({ recordStatus, currentStatus });
+    const isRunning = alertStatus === 'in_progress';
     const elapsedMs = Date.now() - new Date(toUtc(first.timestamp)).getTime();
     const completedAt = !isRunning ? last.timestamp : null;
     const testName = a.suite && a.test
@@ -46,7 +48,9 @@ function parseRows(rows) {
       suite: a.suite,
       test: a.test,
       testName,
+      recordStatus,
       currentStatus,
+      alertStatus,
       totalIterations: iters.length,
       iter: iters.length,
       elapsedMs,
