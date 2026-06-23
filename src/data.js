@@ -62,15 +62,19 @@ export const STATUS_META = {
     left:                 { label: 'LEFT',       fg: '#1d4ed8', bg: '#e7eefe', border: '#cddafb', dot: '#2563eb' },
     stabilized_with_gap:  { label: 'STAB · GAP', fg: '#946200', bg: '#fdf0d6', border: '#f3dba2', dot: '#d08700' },
     stabilized_gap_stuck: { label: 'GAP STUCK',  fg: '#b42318', bg: '#fde7e4', border: '#f5cac3', dot: '#df4636' },
-    stabilized:           { label: 'STABILIZED', fg: '#1a7f4b', bg: '#def0e3', border: '#b1ddc1', dot: '#1f9d57' },
+    stabilized:           { label: 'STABILIZED',       fg: '#1a7f4b', bg: '#def0e3', border: '#b1ddc1', dot: '#1f9d57' },
+    backfill_requested:    { label: 'BACKFILL REQ',    fg: '#6b21a8', bg: '#f3e8ff', border: '#d8b4fe', dot: '#9333ea' },
+    no_candidate_detected: { label: 'NO CANDIDATE',   fg: '#92400e', bg: '#fff7ed', border: '#fed7aa', dot: '#f97316' },
   },
   dark: {
-    initial:              { label: 'INITIAL',    fg: '#9aa3ae', bg: '#1a1f25', border: '#2a313a', dot: '#69727d' },
-    right:                { label: 'RIGHT',      fg: '#9aa3ae', bg: '#1a1f25', border: '#2a313a', dot: '#69727d' },
-    left:                 { label: 'LEFT',       fg: '#7fb0ff', bg: '#0f2138', border: '#1e3a5f', dot: '#4f93ff' },
-    stabilized_with_gap:  { label: 'STAB · GAP', fg: '#f0c468', bg: '#241d0d', border: '#46380f', dot: '#df9f1e' },
-    stabilized_gap_stuck: { label: 'GAP STUCK',  fg: '#ff998c', bg: '#271512', border: '#4a231d', dot: '#f25a48' },
-    stabilized:           { label: 'STABILIZED', fg: '#5fd08c', bg: '#0f2418', border: '#1d4029', dot: '#34b869' },
+    initial:               { label: 'INITIAL',         fg: '#9aa3ae', bg: '#1a1f25', border: '#2a313a', dot: '#69727d' },
+    right:                 { label: 'RIGHT',           fg: '#9aa3ae', bg: '#1a1f25', border: '#2a313a', dot: '#69727d' },
+    left:                  { label: 'LEFT',            fg: '#7fb0ff', bg: '#0f2138', border: '#1e3a5f', dot: '#4f93ff' },
+    stabilized_with_gap:   { label: 'STAB · GAP',     fg: '#f0c468', bg: '#241d0d', border: '#46380f', dot: '#df9f1e' },
+    stabilized_gap_stuck:  { label: 'GAP STUCK',      fg: '#ff998c', bg: '#271512', border: '#4a231d', dot: '#f25a48' },
+    stabilized:            { label: 'STABILIZED',     fg: '#5fd08c', bg: '#0f2418', border: '#1d4029', dot: '#34b869' },
+    backfill_requested:    { label: 'BACKFILL REQ',   fg: '#d8b4fe', bg: '#2e1065', border: '#5b21b6', dot: '#a855f7' },
+    no_candidate_detected: { label: 'NO CANDIDATE',   fg: '#fdba74', bg: '#1c0f05', border: '#431407', dot: '#f97316' },
   },
 };
 
@@ -79,4 +83,4 @@ export function statusMeta(status, dark) {
   return theme[status] || theme.initial;
 }
 
-export const LEGEND_STATUSES = ['initial', 'left', 'right', 'stabilized_with_gap', 'stabilized_gap_stuck', 'stabilized'];
+export const LEGEND_STATUSES = ['initial', 'left', 'right', 'stabilized_with_gap', 'stabilized_gap_stuck', 'stabilized', 'backfill_requested', 'no_candidate_detected'];

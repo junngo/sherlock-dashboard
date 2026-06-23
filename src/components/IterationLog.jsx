@@ -11,7 +11,7 @@ function TimelineView({ iterations, dark, signatureId, frameworkId }) {
       {iterations.map((it, i) => {
         const m = statusMeta(it.status, dark);
         const isLast = i === iterations.length - 1;
-        const tBarPct = Math.round(Math.min(it.detected_t_value / 15, 1) * 100) + '%';
+        const tBarPct = it.detected_t_value != null ? Math.round(Math.min(it.detected_t_value / 15, 1) * 100) + '%' : '0%';
         return (
           <div key={it.iteration} style={{ display: 'flex', gap: '14px', alignItems: 'stretch' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '14px', flexShrink: 0 }}>
@@ -35,7 +35,7 @@ function TimelineView({ iterations, dark, signatureId, frameworkId }) {
                   </div>
                   <div>
                     <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', fontWeight: 600, letterSpacing: '0.7px', textTransform: 'uppercase', color: 'var(--text3)' }}>t-value</div>
-                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '13px', fontWeight: 500, color: 'var(--text)', marginTop: '3px' }}>{it.detected_t_value.toFixed(2)}</div>
+                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '13px', fontWeight: 500, color: 'var(--text)', marginTop: '3px' }}>{it.detected_t_value != null ? it.detected_t_value.toFixed(2) : '—'}</div>
                     <div style={{ height: '3px', borderRadius: '2px', background: 'var(--border)', marginTop: '6px', overflow: 'hidden' }}>
                       <div style={{ height: '100%', width: tBarPct, background: m.dot }} />
                     </div>
@@ -75,7 +75,7 @@ function TableView({ iterations, dark, signatureId, frameworkId }) {
           <StatusBadge status={it.status} dark={dark} small />
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: 'var(--text)' }}>{it.detected_push_id}{it.detected_push_revision ? <a href={buildRevisionUrl(signatureId, frameworkId, it.detected_push_revision.slice(0, 7))} target="_blank" rel="noreferrer" title="View in Graphs" onClick={e => e.stopPropagation()} style={{ color: 'var(--text3)', textDecoration: 'none', verticalAlign: 'middle', cursor: 'pointer' }} onMouseEnter={e => { e.currentTarget.style.color = '#3b82f6'; }} onMouseLeave={e => { e.currentTarget.style.color = 'var(--text3)'; }}> ({it.detected_push_revision.slice(0, 7)}↗)</a> : null}</span>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: 'var(--text3)' }}>{it.previous_push_id}{it.previous_push_revision ? ` (${it.previous_push_revision.slice(0, 7)})` : ''}</span>
-          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: 'var(--text)' }}>{it.detected_t_value.toFixed(2)}</span>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: 'var(--text)' }}>{it.detected_t_value != null ? it.detected_t_value.toFixed(2) : '—'}</span>
           <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: 'var(--text2)' }}>{it.detected_push_gap_size}</span>
           <span style={{ fontSize: '11.5px', color: 'var(--text2)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', minWidth: 0 }}>{it.notes}</span>
         </div>
@@ -101,7 +101,7 @@ function CardsView({ iterations, dark, signatureId, frameworkId }) {
             <div style={{ display: 'flex', gap: '16px', marginTop: '11px', paddingTop: '9px', borderTop: '1px solid var(--border)' }}>
               <div>
                 <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '8.5px', fontWeight: 600, letterSpacing: '.5px', textTransform: 'uppercase', color: 'var(--text3)' }}>t-val</div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12.5px', color: 'var(--text)', marginTop: '2px' }}>{it.detected_t_value.toFixed(2)}</div>
+                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12.5px', color: 'var(--text)', marginTop: '2px' }}>{it.detected_t_value != null ? it.detected_t_value.toFixed(2) : '—'}</div>
               </div>
               <div>
                 <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '8.5px', fontWeight: 600, letterSpacing: '.5px', textTransform: 'uppercase', color: 'var(--text3)' }}>Gap</div>
