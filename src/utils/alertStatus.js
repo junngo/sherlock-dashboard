@@ -1,7 +1,7 @@
 export function classifyAlert({ recordStatus, currentStatus }) {
   if (currentStatus === 'stabilized') return 'stabilized';
   if (currentStatus === 'stabilized_gap_stuck') return 'gap_stuck';
-  if (recordStatus === 2) return 'in_progress';
+  if (recordStatus === 0 || recordStatus === 1 || recordStatus === 2) return 'in_progress';
   return 'failed';
 }
 

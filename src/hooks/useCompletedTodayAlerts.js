@@ -24,7 +24,7 @@ function parseRows(rows) {
       platform: a.platform,
       test: a.suite && a.test ? `${a.suite} ${a.test}` : (a.suite || a.test || '—'),
       status: last.status,
-      iter: iters.length,
+      iter: last.iteration,
       completedAt: formatDateTime(last.timestamp),
       iterations: iters.map(it => ({
         iteration: it.iteration,

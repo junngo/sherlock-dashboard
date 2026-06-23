@@ -30,7 +30,7 @@ function parseRows(rows) {
       status: last.status,
       recordStatus: a.record_status,
       alertStatus: classifyAlert({ recordStatus: a.record_status, currentStatus: last.status }),
-      iter: iters.length,
+      iter: last.iteration,
       elapsed: formatElapsed(elapsedMs),
       elapsedMs,
       iterations: iters.map(it => ({
